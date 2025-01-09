@@ -68,10 +68,10 @@
 
 设 `target_cnt` 为要拆分的段数，`length` 为总长度：
 - 最坏情况下，每次只增加一个单位，循环次数与 `length` 成正比。
-- 单次循环中构造候选索引需要 $O(\text{target\_cnt})$。
+- 单次循环中构造候选索引需要 $O(\text{target_cnt})$。
 
 总复杂度近似为：
-$$O(\text{length} \cdot \text{target\_cnt})$$
+$$O(\text{length} \cdot \text{target_cnt})$$
 
 ---
 
