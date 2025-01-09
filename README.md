@@ -71,9 +71,7 @@
 - 单次循环中构造候选索引需要 $O(\text{target\_cnt})$。
 
 总复杂度近似为：
-$$
-O(\text{length} \cdot \text{target\_cnt})
-$$
+$$O(\text{length} \cdot \text{target\_cnt})$$
 
 ---
 
@@ -87,9 +85,7 @@ $$
   4. 合并矩形块，复杂度为 $O(k)$。
 
 综合考虑：
-$$
-O(L \cdot \text{cnt} + k \log k)
-$$
+$$O(L \cdot \text{cnt} + k \log k)$$
 
 ---
 
@@ -101,19 +97,7 @@ $$
 - 假设每行的区间数 $k$ 近似为 $m$：
   - 单次调用 `place_row` 的复杂度为 $O(N \cdot m + m \log m)$。
   - 总复杂度为：
-$$
-O(m \cdot (N \cdot m + m \log m)) = O(m^2 N + m^2 \log m)
-$$
-
----
-
-### 综合复杂度
-
-当 $N$ 和 $m$ 增大时，主要瓶颈来自于 `solve` 函数中的随机拆分逻辑：
-$$
-O(m^2 N + m^2 \log m)
-$$
-
+$$O(m \cdot (N \cdot m + m \log m)) = O(m^2 N + m^2 \log m)$$
 
 
 ## 常见问题
