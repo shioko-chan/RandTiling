@@ -1,5 +1,5 @@
 # RandTiling
-
+![Random Rectangle Tiling](./image/Figure_1.png)  
 本项目随机地将一个正方形（或长方形）区域拆分成若干行，每行再拆分若干随机宽度的小矩形块，并通过 **Matplotlib** 进行可视化展示。你可以在代码里自定义拆分的上下界、行数、以及可视化的方式。
 
 ## 特性
@@ -56,6 +56,65 @@
 
 - **`plot_solution(N, block)`**  
   使用 Matplotlib 绘图，将拆分得到的矩形块在一个 `N x N` 的坐标系中呈现。
+
+## 复杂度分析
+
+### 1. `split_ceil(lb, ub, target_cnt, length)`
+
+- 该函数用于将长度 `length` 按 `[lb, ub]` 范围随机拆分成 `target_cnt` 份。
+- 主要时间复杂度来源于：
+  - `while` 循环中每次分配剩余长度 `leftover`。
+  - 每次分配时构造候选索引的循环 `candidates = [i for i, x in enumerate(ans) if x < ub]`。
+
+设 `target_cnt` 为要拆分的段数，`length` 为总长度：
+- 最坏情况下，每次只增加一个单位，循环次数与 `length` 成正比。
+- 单次循环中构造候选索引需要 $O(\text{target\_cnt})$。
+
+总复杂度近似为：
+$$
+O(\text{length} \cdot \text{target\_cnt})
+$$
+
+---
+
+### 2. `place_row(H, lb, ub, cnt, row_cnt, row_id, ceils)`
+
+- 该函数在给定的区间 `ceils` 上拆分矩形块并生成新的区间。
+- 时间复杂度主要来自以下部分：
+  1. 遍历 `ceils`，计算每段的上下界、拆分次数。假设 `ceils` 数量为 $k$，则该部分复杂度为 $O(k)$。
+  2. 对每个区间调用 `split_ceil` 进行拆分，假设总长度为 $L$，块数为 $\text{cnt}$，则总复杂度为 $O(L \cdot \text{cnt})$。
+  3. 排序拆分结果 `splitted_ceils.sort(...)`，复杂度为 $O(k \log k)$。
+  4. 合并矩形块，复杂度为 $O(k)$。
+
+综合考虑：
+$$
+O(L \cdot \text{cnt} + k \log k)
+$$
+
+---
+
+### 3. `solve(N, m, lb, ub)`
+
+- 主函数将一个大小为 $(N \times N)$ 的正方形区域拆分成 $m$ 行。
+- 时间复杂度来源于 `place_row` 函数的调用：
+  - `place_row` 被调用 $m$ 次，每次拆分的区间长度最多为 $N$，且需要拆分 $m$ 个块。
+- 假设每行的区间数 $k$ 近似为 $m$：
+  - 单次调用 `place_row` 的复杂度为 $O(N \cdot m + m \log m)$。
+  - 总复杂度为：
+$$
+O(m \cdot (N \cdot m + m \log m)) = O(m^2 N + m^2 \log m)
+$$
+
+---
+
+### 综合复杂度
+
+当 $N$ 和 $m$ 增大时，主要瓶颈来自于 `solve` 函数中的随机拆分逻辑：
+$$
+O(m^2 N + m^2 \log m)
+$$
+
+
 
 ## 常见问题
 
